@@ -47,6 +47,11 @@ async def help(update, context):
 async def go(update, context):
     global THREAD
 
+    if THREAD and not THREAD.cancelled():
+        await context.bot.send_message(chat_id=update.effective_chat.id,
+                                       text="Vous êtes déjà en mode travail")
+        return
+
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="C'est partie !")
     THREAD = asyncio.create_task(timer_action(update, context))
@@ -94,6 +99,7 @@ async def stop(update, context):
 
     STOP_SIGNAL = True  # Pour arrêter le timer
     THREAD.cancel()  # Arrête le thread
+    THREAD = None
 
     # Calcule du temps de travail
     end_time = time.perf_counter()
