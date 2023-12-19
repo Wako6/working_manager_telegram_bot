@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  telegram-bot:
+    image: william_telegram_bot  # Remplacez par le nom de votre image Docker
+    # environment:
+    #   TELEGRAM_TOKEN: <votre_token_telegram>  # Remplacez par votre token Telegram
+    ports:
+      - "80:80"  # Exposez les ports si nécessaire
+    restart: unless-stopped
