@@ -132,9 +132,9 @@ async def gettime(update, context):
     # Calcule du temps qu'il reste
     left_time = total_time % (WORKING_TIME + BREAK_TIME)
     if left_time < WORKING_TIME:
-        message = f"Il reste {format_timedelta(left_time)} avant la prochaine pause."
+        message = f"Il reste {format_timedelta(WORKING_TIME - left_time)} avant la prochaine pause."
     else:
-        message = f"Il reste {format_timedelta(left_time - WORKING_TIME)} de pause."
+        message = f"Il reste {format_timedelta((WORKING_TIME + BREAK_TIME) - left_time)} de pause."
 
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
