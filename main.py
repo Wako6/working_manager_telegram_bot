@@ -6,7 +6,7 @@ from telegram.ext import (ApplicationBuilder, CommandHandler, MessageHandler,
 from datetime import timedelta
 
 # initialize API token - Telegram
-TOKEN = '6809811231:AAGz95edy9kBxUjCdhC3qOJeuev-UioRFZ4'
+TOKEN = '6489762665:AAGAx5xytbcmQFM_oDkRbpsKoAF19sTz7NA'
 
 STOP_SIGNAL = False
 THREAD = None
@@ -123,16 +123,23 @@ def format_timedelta(seconds):
 
 
 async def gettime(update, context):
-    global START_TIME
+    global START_TIME, WORKING_TIME, BREAK_TIME
 
     # Calcule du temps de travail
     end_time = time.perf_counter()
     total_time = end_time - START_TIME
 
+    # Calcule du temps qu'il reste
+    left_time = total_time % (WORKING_TIME + BREAK_TIME)
+    if left_time < WORKING_TIME:
+        message = f"Il reste {format_timedelta(left_time)} avant la prochaine pause."
+    else:
+        message = f"Il reste {format_timedelta(left_time - WORKING_TIME)} de pause."
+
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=
-        f"Ca fait exactement {format_timedelta(total_time)} que vous avez commencé à travailler"
+        f"Ca fait exactement {format_timedelta(total_time)} que vous avez commencé à travailler. {message}"
     )
 
 
